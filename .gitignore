@@ -1,32 +1,24 @@
-# Prerequisites
-*.d
+# internal and intermediate data
+/int/
+/morgue/
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Eclipse directories and files
+/.settings/
+/.cproject
+/.project
 
-# Precompiled Headers
-*.gch
-*.pch
+# Build directories
+/build/
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Office lock files
+/doc/~*
+/doc/.~*
 
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
+# Generated files
+*.log
 *.out
-*.app
+*.vcd
+
+
+
+
