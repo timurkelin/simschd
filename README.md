@@ -4,10 +4,21 @@ SystemC Simulator of the Static Scheduler
 Timing, timing hierarchy, time tick issues a named event ot a scheduler <br />
 ```
 frames: 
-[{ "name": <frame_string_name>, 
+[{ "name": <this_frame_string_name>, 
    "seq":  [{"delay":<time+unit>}, 
             {"event":<event_string_name>}, 
             {"frame":<another_frame_string_name>}, 
+            .....
+           ]
+ },          
+.....
+]
+
+generate:
+[{ "name": <gen_string_name>, 
+   "seq":  [{"delay":<time+unit>}, 
+            {"event":<event_string_name>}, 
+            {"frame":<frame_string_name>}, 
             .....
            ]
  },          
