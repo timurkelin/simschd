@@ -25,7 +25,8 @@ generate:
 .....
 ]
 ```
-Tasks, triggering event (regex), task dependencies, task durations, list of the executors for the task in the form: (resA | resB | ... ) & ( resX | resY ) & resZ <br />
+Threads: triggering events (regex), generated events, tasks
+Tasks: task durations, list of the executors for the task in the form: (resA | resB | ... ) & ( resX | resY ) & resZ <br />
 Executors. each executor can occupy a fraction of a common pool <br />
 common pools: if requested common resource exceeds the volume of the common pool then all executors slow down (DVFS, throughput) <br />
 
