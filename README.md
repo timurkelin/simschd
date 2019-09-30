@@ -1,32 +1,21 @@
 # Evaluation of the Static Scheduler
 SystemC Simulator of the Static Scheduler
 
-Timing, timing hierarchy, time tick issues a named event to the scheduler <br />
+Threads: triggering events (AND list of regex), generated events, tasks <br />
+event "sim_start" to ignite the timing threads 
 ```
-frames: 
-[{ "name": <this_frame_string_name>, 
-   "seq":  [{"delay":<time+unit>}, OR
-            {"event":<event_string_name>}, OR
-            {"frame":<another_frame_string_name>}, 
-            .....
-           ]
- },          
-.....
-]
-
-generate:
-[{ "name": <gen_string_name>, 
-   "seq":  [{"delay":<time+unit>}, OR
-            {"event":<event_string_name>}, OR
-            {"frame":<frame_string_name>}, OR
-            .....
-           ]
- },          
-.....
+threads:
+[{ name: <thread_name_string>
+   start: [<event_name_regex>, <event_name_regex> ... ], 
+   seq: [{"task":<task_name_string>}, OR
+         {"event":<event_name_string>}, OR
+         ....
+        ]
+ },
+..... 
 ]
 ```
-Threads: triggering events (regex), generated events, tasks <br />
-Tasks: task durations, list of the executors for the task in the form: (execA | execB | ... ) & ( execX | execY ) & execZ <br />
+Tasks: task durations, list of the executors (AND list of regex) <br />
 Executors: each executor can occupy a fraction of a common resource  <br />
 Common resource: if requested common resource exceeds the volume of the common resource then all executors slow down (DVFS, throughput) <br />
 
