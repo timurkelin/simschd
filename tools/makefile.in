@@ -1,0 +1,25 @@
+## Object files
+OBJ_CXX := $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(notdir $(SRC_CXX)))))
+
+## Dependency destination is ../dep relative to the src dir
+DEP_CXX := $(addprefix $(DEP_DIR)/, $(addsuffix .d, $(basename $(notdir $(SRC_CXX)))))
+
+obj: $(OBJ_CXX)
+	@printf "$(OBJ_CXX) " >> $(OBJ_LIST_FILE)
+
+$(OBJ_DIR)/%.o : $(SRC_CXX_DIR)/%.cpp
+	@mkdir -p $(dir $@)
+	@echo "CXX $<"
+	@$(CXX) $(CXXFLAGS) $(INC_CXX_DIR) $< -o $@
+
+$(DEP_DIR)/%.d : $(SRC_CXX_DIR)/%.cpp
+	@mkdir -p $(dir $@)
+	@echo "DEP $*.o"
+	@$(CXX) $(CXXFLAGS) $(INC_CXX_DIR) -M $< -o $@
+	@mv -f $(DEP_DIR)/$*.d $(DEP_DIR)/$*.d.tmp
+	@sed -e 's|$*.o:|$(OBJ_DIR)/$*.o:|' < $(DEP_DIR)/$*.d.tmp > $(DEP_DIR)/$*.d
+	@sed -e 's/.*://' -e 's/\\$$//' < $(DEP_DIR)/$*.d.tmp | fmt -1 | \
+	 sed -e 's/^ *//' -e 's/$$/:/' >> $(DEP_DIR)/$*.d
+	@rm -f $(DEP_DIR)/$*.d.tmp
+
+-include $(DEP_CXX)
