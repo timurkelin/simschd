@@ -19,4 +19,6 @@ Tasks: task durations, list of the executors (AND list of regex) <br />
 Executors: each executor can occupy a fraction of a common resource  <br />
 Common resource: if requested common resource exceeds the volume of the common resource then all executors slow down (DVFS, throughput) <br />
 
-Resolve recursive frames and events
+Resolve recursive execution of the threads i.e. a thread starts itself. Indirect call: the chain of other threads can be in the middle.
+Resolve a call to a thread which is being executed. 
+
