@@ -16,7 +16,26 @@ void schd_trace_c::write_map_simvision(
       const boost_pt::ptree& map,
       const std::string&     fname ) {
 
+   std::ofstream os;
+   std::string   fn_ext = fname + ".tcl"; // TCL file
+
+   os.exceptions(
+         std::ofstream::badbit |
+         std::ofstream::failbit );
+
+   try {
+      os.open(
+            fn_ext.c_str(),
+            std::ofstream::out |
+            std::ofstream::app );
+   }
+   catch( const std::ofstream::failure &err ) {
+      SCHD_REPORT_ERROR( "simd::trace" ) << err.what();
+   }
+
    SCHD_REPORT_ERROR( "schd::trace" ) << "Unsupported viewer";
+
+   os.close();
 
 } // schd_trace_c::write_map_simvision(
 

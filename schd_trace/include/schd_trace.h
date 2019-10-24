@@ -8,6 +8,7 @@
 #ifndef SCHD_REPORT_INCLUDE_SCHD_TRACE_H_
 #define SCHD_REPORT_INCLUDE_SCHD_TRACE_H_
 
+#include <string>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/optional/optional.hpp>
 #include <systemc>
