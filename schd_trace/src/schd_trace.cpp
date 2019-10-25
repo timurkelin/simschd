@@ -84,6 +84,68 @@ void schd_trace_c::init(
    }
 } // schd_trace_c::init(
 
+schd_trace_c::crgb_t schd_trace_c::rgb_split( const std::size_t rgb_c ) {
+   return std::make_tuple(
+      ( rgb_c >> 16 ) & 0xff,
+      ( rgb_c >>  8 ) & 0xff,
+      ( rgb_c       ) & 0xff );
+}
+
+std::size_t schd_trace_c::rgb_comb(  const schd_trace_c::crgb_t rgb_s ) {
+   return ( std::get<0>( rgb_s ) << 16 ) |
+          ( std::get<1>( rgb_s ) <<  8 ) |
+          ( std::get<2>( rgb_s ));
+}
+
+std::string schd_trace_c::rgb2x11name( const std::size_t  rgb_c ) {
+   crgb_t rgb_s = rgb_split( rgb_c );
+
+   boost::optional<cmap_t> min_el_p;
+   std::size_t             min_se = UINT_MAX;
+
+   BOOST_FOREACH( const cmap_t& cel, cmap ) {
+      int dist_r = std::get<0>( std::get<1>( cel )) - std::get<0>( rgb_s );
+      int dist_g = std::get<1>( std::get<1>( cel )) - std::get<1>( rgb_s );
+      int dist_b = std::get<2>( std::get<1>( cel )) - std::get<2>( rgb_s );
+
+      std::size_t se = dist_r * dist_r +
+                       dist_g * dist_g +
+                       dist_b * dist_b;
+
+      if( se == 0 ) {
+         min_el_p = cel;
+         break;
+      }
+      else {
+         if( min_se > se ) {
+            min_se = se;
+            min_el_p = cel;
+         }
+      }
+   }
+
+   return std::get<0>( min_el_p.get() );
+}
+
+std::size_t schd_trace_c::x11name2rgb( const std::string& rgb_n ) {
+   crgb_t rgb_s = std::make_tuple( 0, 0, 0 );
+   bool   found = false;
+
+   BOOST_FOREACH( const cmap_t& cel, cmap ) {
+      if( std::get<0>( cel ) == rgb_n ) {
+         rgb_s = std::get<1>( cel );
+         found = true;
+         break;
+      }
+   }
+
+   if( !found ) {
+      SCHD_REPORT_ERROR( "schd::trace" ) << "color name not found: " << rgb_n;
+   }
+
+   return rgb_comb( rgb_s );
+}
+
 schd_trace_c::~schd_trace_c(
       void ) {
    if( tf ) {
