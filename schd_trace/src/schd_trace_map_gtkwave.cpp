@@ -62,7 +62,7 @@ void schd_trace_c::write_map_gtkwave(
          st_bgclr_s = rgb2x11name( st_bgclr_ip.get());
       }
       else if( st_bgclr_sp.is_initialized()) {
-         x11name2rgb( st_bgclr_sp.get()); // is bg_color refers to a valid x11 color
+         x11name2rgb( st_bgclr_sp.get()); // does bg_color refer to a valid x11 color
          st_bgclr_s = st_bgclr_sp.get();
       }
 
