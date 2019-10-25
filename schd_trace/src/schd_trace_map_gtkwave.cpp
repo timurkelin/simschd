@@ -34,7 +34,41 @@ void schd_trace_c::write_map_gtkwave(
       SCHD_REPORT_ERROR( "simd::trace" ) << err.what();
    }
 
-   SCHD_REPORT_ERROR( "schd::trace" ) << "Unsupported viewer";
+   BOOST_FOREACH( const boost_pt::ptree::value_type& v, map ) {
+      if( !v.first.empty()) {
+         SCHD_REPORT_ERROR( "schd::trace" ) << "Incorrect structure";
+      }
+
+      std::string st_name_s;
+      std::size_t st_name_h;
+
+      // Read name
+      try {
+         st_name_s = v.second.get<std::string>( "name" );
+      }
+      catch( const boost_pt::ptree_error& err ) {
+         SCHD_REPORT_ERROR( "schd::trace" ) << err.what();
+      }
+      catch( ... ) {
+         SCHD_REPORT_ERROR( "schd::trace" ) << "Unexpected";
+      }
+
+      // Process bg color
+      boost::optional<std::size_t> st_bgclr_ip = v.second.get_optional<std::size_t>( "bg_color" );
+      boost::optional<std::string> st_bgclr_sp = v.second.get_optional<std::string>( "bg_color" );
+      std::string st_bgclr_s;
+
+      if( st_bgclr_ip.is_initialized()) {
+         st_bgclr_s = rgb2x11name( st_bgclr_ip.get());
+      }
+      else if( st_bgclr_sp.is_initialized()) {
+         x11name2rgb( st_bgclr_sp.get()); // is bg_color refers to a valid x11 color
+         st_bgclr_s = st_bgclr_sp.get();
+      }
+
+
+
+   }
 
    os.close();
 
