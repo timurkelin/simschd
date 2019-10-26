@@ -14,6 +14,7 @@
 namespace schd {
 
 void schd_trace_c::write_map_gtkwave(
+      const boost_pt::ptree& task_list,
       const boost_pt::ptree& map,
       const std::string&     fname ) {
 

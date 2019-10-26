@@ -6,25 +6,27 @@
  */
 
 #include <utility>
+#include <algorithm>
+#include <iterator>
+#include <fstream>
 #include <boost/foreach.hpp>
+#include <boost/regex.hpp>
 #include "schd_trace.h"
 #include "schd_report.h"
 
 namespace schd {
 
 void schd_trace_c::init(
-      boost::optional<const boost_pt::ptree&> pref_p ) {
+      boost::optional<const boost_pt::ptree&> _pref_p ) {
+
+   pref_p = _pref_p;
 
    const boost_pt::ptree& pref = pref_p.get();
 
-   boost::optional<std::string> trace_p  = pref.get_optional<std::string>("trace_file");
+   boost::optional<std::string> trace_p = pref.get_optional<std::string>("file");
 
    // Set vcd file name
-   if(( !trace_p ) || ( trace_p.get().length() == 0 )) {
-      SCHD_REPORT_INFO( "schd::trace" ) << "VCD trace is disabled";
-      tf = NULL;
-   }
-   else {
+   if( trace_p.is_initialized() && ( trace_p.get().length() != 0 )) {
       tf = sc_core::sc_create_vcd_trace_file( trace_p.get().c_str() );
 
       if( tf ) {
@@ -37,7 +39,7 @@ void schd_trace_c::init(
       std::string viewer;
 
       try {
-       viewer = pref.get<std::string>("viewer");
+         viewer = pref.get<std::string>("viewer");
       }
       catch( const boost_pt::ptree_error& err ) {
          SCHD_REPORT_ERROR( "schd::trace" ) << err.what();
@@ -46,43 +48,150 @@ void schd_trace_c::init(
          SCHD_REPORT_ERROR( "schd::trace" ) << "Unexpected";
       }
 
+      schd_trace_map_c *_ptr = NULL;
 
-      // Create viewer map
-      if( viewer != "none" ) {
-
-         const boost_pt::ptree &map = [&]() {
-           try {
-              return pref.get_child("map");
-           }
-           catch( const boost_pt::ptree_error& err ) {
-              SCHD_REPORT_ERROR( "schd::trace" ) << err.what();
-           }
-           catch( const std::exception& err ) {
-              SCHD_REPORT_ERROR( "schd::trace" ) << err.what();
-           }
-           catch( ... ) {
-              SCHD_REPORT_ERROR( "schd::trace" ) << " Unexpected";
-           }
-
-           return pref.get_child("map"); // this is unreachable
-         }(); // iife
-
-         if( viewer == "gtkwave" ) { // GTK Wave
-            write_map_gtkwave(
-                 map,
-                 trace_p.get() );
-         }
-         else if( viewer == "simvision" ) { // Cadence SimVision
-            write_map_simvision(
-                 map,
-                 trace_p.get() );
-         }
-         else {
-            SCHD_REPORT_ERROR( "schd::trace" ) << "Unsupported viewer";
-         }
+      if(      viewer == "gtkwave"   ) _ptr = new schd_trace_map_gtkwave_c();    // GTK Wave
+      else if( viewer == "simvision" ) _ptr = new schd_trace_map_simvision_c();  // Cadence SimVision
+      else {
+         SCHD_REPORT_ERROR( "schd::trace" ) << "Unsupported viewer";
       }
+
+      trace_map_p = boost::optional<schd_trace_map_c&>( *_ptr );
+   }
+   else {
+      SCHD_REPORT_INFO( "schd::trace" ) << "VCD trace is disabled";
+      tf = NULL;
    }
 } // schd_trace_c::init(
+
+void schd_trace_c::save_map(
+      boost::optional<const boost_pt::ptree&> _thrd_p ) {
+
+   const boost_pt::ptree& pref = pref_p.get();
+
+   boost::optional<std::string> trace_p  = pref.get_optional<std::string>("file");
+
+   if( trace_p.is_initialized() && ( trace_p.get().length() != 0 )) {
+      // Open file and write prefix line
+      std::string  fn_ext = trace_p.get() + trace_map_p.get().file_ext;
+
+      std::ofstream os;
+
+      os.exceptions(
+            std::ofstream::badbit |
+            std::ofstream::failbit );
+
+      try {
+         os.open(
+               fn_ext.c_str(),
+               std::ofstream::out |
+               std::ofstream::app );
+      }
+      catch( const std::ofstream::failure &err ) {
+         SCHD_REPORT_ERROR( "simd::trace" ) << err.what();
+      }
+
+      std::vector<std::string> thrd_task_proc; // Storage of all the processed instances
+      boost::optional<const boost_pt::ptree&> map_list_p = pref.get_child_optional("map");
+
+      // Cycle through the list of threads
+      BOOST_FOREACH( const boost_pt::ptree::value_type& thrd, _thrd_p.get()) {
+         if( !thrd.first.empty()) {
+            SCHD_REPORT_ERROR( "schd::trace" ) << "Incorrect structure";
+         }
+
+         boost::optional<std::string> thrd_name_p = thrd.second.get_optional<std::string>("name");
+
+         if( !thrd_name_p.is_initialized()) {
+            SCHD_REPORT_ERROR( "schd::trace" ) << "Incorrect structure";
+         }
+
+         boost::optional<const boost_pt::ptree&> seq_p = thrd.second.get_child_optional("seq");
+
+         if( !seq_p.is_initialized()) {
+            SCHD_REPORT_ERROR( "schd::trace" ) << "Incorrect structure";
+         }
+
+         // Cycle through the instances of the thread and process tasks
+         BOOST_FOREACH( const boost_pt::ptree::value_type& seq_el, seq_p.get()) {
+            if( !seq_el.first.empty()) {
+               SCHD_REPORT_ERROR( "schd::trace" ) << "Incorrect structure";
+            }
+
+            boost::optional<std::string> task_name_p = seq_el.second.get_optional<std::string>("task");
+
+            if( !task_name_p.is_initialized()) {
+               continue;
+            }
+
+            // Cycle through the names to process
+            std::vector<std::string> name_vec = {
+                  task_name_p.get(),
+                  thrd_name_p.get() + "." + task_name_p.get()
+            };
+
+            BOOST_FOREACH( const std::string& name_el, name_vec ) {
+               // Check if the name has been processed already
+               if( std::find( thrd_task_proc.begin(),
+                              thrd_task_proc.end(),
+                              name_el ) != thrd_task_proc.end()) {
+                  continue;
+               }
+
+               thrd_task_proc.push_back( name_el ); // Save element
+
+               // Find map for this name
+               boost::optional<const boost_pt::ptree&> map_p;
+
+               if( map_list_p.is_initialized()) {
+                  BOOST_FOREACH( const boost_pt::ptree::value_type& map_el, map_list_p.get()) {
+                     boost::regex re;
+
+                     if( !map_el.first.empty()) {
+                        SCHD_REPORT_ERROR( "schd::trace" ) << "Incorrect structure";
+                     }
+
+                     try {
+                        re = map_el.second.get<std::string>("name_regex"); // assign to regex
+                     }
+                     catch( const boost_pt::ptree_error& err ) {
+                        SCHD_REPORT_ERROR( "schd::trace" ) << err.what();
+                     }
+                     catch( const boost::regex_error& err ) {
+                        SCHD_REPORT_ERROR( "schd::trace" ) << err.what();
+                     }
+                     catch( ... ) {
+                        SCHD_REPORT_ERROR( "schd::trace" ) << "Unexpected";
+                     }
+
+                     if( boost::regex_match( name_el, re )) {
+                        if( !map_p.is_initialized()) {
+                           map_p = map_el.second;
+                        }
+                        else {
+                           SCHD_REPORT_ERROR( "schd::trace" ) << "Duplicate map for " << name_el;
+                        }
+                     }
+                  } // BOOST_FOREACH( const boost_pt::ptree::value_type& map_el, map_list_p.get()) {
+               } // if( map_list_p.is_initialized()) {
+
+
+
+            } // BOOST_FOREACH( const std::string& name_el, name_vec )
+         } // BOOST_FOREACH( const boost_pt::ptree::value_type& seq_el, seq_p.get()) {
+      } // BOOST_FOREACH( const boost_pt::ptree::value_type& thrd, _thrd_p.get())
+
+      // Write suffix line and close the file stream
+      if( viewer == "gtkwave" ) { // GTK Wave
+
+      }
+      else if( viewer == "simvision" ) { // Cadence SimVision
+
+      }
+
+      os.close();
+   } // if( trace_p.is_initialized() && ( trace_p.get().length() != 0 )) {
+}
 
 schd_trace_c::crgb_t schd_trace_c::rgb_split( const std::size_t rgb_c ) {
    return std::make_tuple(
