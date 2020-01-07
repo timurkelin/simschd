@@ -1,0 +1,188 @@
+{
+   "threads": [
+      {"name":      "delay_chain",
+       "priority":  "0.0",
+       "start":     ["^__start__$"],
+       "sequence":  [{"task":  {"run": "dly10",
+                                "param": { "id": "p0" }
+                               }
+                     },
+                     {"event": "enable1"
+                     },
+                     {"task":  {"run": "dly10",
+                                "param": { "id": "p1" }
+                               }
+                     },
+                     {"event": "enable2"
+                     },
+                     {"task":  {"run": "dly10",
+                                "param": { "id": "p2" }
+                               }
+                     },
+                     {"event": "enable3"
+                     }
+                    ]
+      },
+
+      {"name":      "run_80",
+       "priority":  "1.0",
+       "start":     ["^enable1$"],
+       "sequence":  [{"task":  {"run": "exec_80",
+                                "param": { "id": "" }
+                               }
+                     }
+                    ]
+      },
+
+      {"name":      "run_60",
+       "priority":  "1.0",
+       "start":     ["^enable2$"],
+       "sequence":  [{"task":  {"run": "exec_60",
+                                "param": { "id": "" }
+                               }
+                     }
+                    ]
+      },
+
+      {"name":      "run_40",
+       "priority":  "1.0",
+       "start":     ["^enable3$"],
+       "sequence":  [{"task":  {"run": "exec_40",
+                                "param": { "id": "" }
+                               }
+                     }
+                    ]
+      }
+   ],
+
+   "tasks": [
+      {"name":     "dly10",
+       "exec":     [{"run": "^delay1$",
+                     "use": [],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "10us"
+      },
+
+      {"name":     "exec_80",
+       "exec":     [{"run": "^exec1$",
+                     "use": [{"res": "cres1", "demand": "70"},
+                             {"res": "cres2", "demand": "30"},
+                             {"res": "cres3", "demand": "10"}
+                            ],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "80us"
+      },
+
+      {"name":     "exec_60",
+       "exec":     [{"run": "^exec2$",
+                     "use": [{"res": "cres1", "demand": "60"},
+                             {"res": "cres2", "demand": "40"},
+                             {"res": "cres3", "demand": "20"}
+                            ],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "60us"
+      },
+
+      {"name":     "exec_40",
+       "exec":     [{"run": "^exec3$",
+                     "use": [{"res": "cres1", "demand": "50"},
+                             {"res": "cres2", "demand": "50"},
+                             {"res": "cres3", "demand": "30"}
+                            ],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "40us"
+      }
+   ],
+
+   "executors": [
+      { "name": "delay1" },
+
+      { "name": "exec1" },
+      { "name": "exec2" },
+      { "name": "exec3" }
+   ],
+
+   "common": [
+      {"name": "cres1", "capacity": "100" },
+      {"name": "cres2", "capacity": "100" },
+      {"name": "cres3", "capacity": "100" }
+   ],
+
+   "time": {
+      "resolution": "1.0ns",
+      "finish":     "200.0us"
+   },
+
+   "trace": {
+      "file":   "trace",
+      "viewer": "gtkwave",
+      "map": [
+         {"mask": "^delay_chain#dly10#.*$", "format": "%1%.%2%%3$.0s", "bgcolor": "grey0",
+          "opt": "-font -*-courier-medium-i-normal--12-* -shape bus -textcolor #F8F8FF -linecolor green" },
+         {"mask": "^run_80#exec_80#.*$", "format": "%1%.%2%(%3%)",  "bgcolor": "OliveDrab",
+          "opt": "-font -*-courier-medium-i-normal--12-* -shape bus -textcolor #F8F8FF -linecolor green" },
+         {"mask": "^run_60#exec_60#.*$", "format": "%1%.%2%(%3%)",  "bgcolor": "DarkRed",
+          "opt": "-font -*-courier-medium-i-normal--12-* -shape bus -textcolor #F8F8FF -linecolor green" },
+         {"mask": "^run_40#exec_40#.*$", "format": "%1%.%2%(%3%)",  "bgcolor": "navy blue",
+          "opt": "-font -*-courier-medium-i-normal--12-* -shape bus -textcolor #F8F8FF -linecolor green" },
+          
+         {"mask": "^$",   "format": "%1%%2%%3% ",    "bgcolor": "grey0",
+          "opt": "-font -*-courier-medium-i-normal--12-* -shape z   -textcolor #F8F8FF -linecolor green" },
+         {"mask": "^.*$", "format": "%1%.%2%(%3%)",  "bgcolor": "grey0",
+          "opt": "-font -*-courier-medium-i-normal--12-* -shape bus -textcolor #F8F8FF -linecolor green" }
+      ]
+   },
+
+   "dump": [
+       { "buf_regex":  "^.*(exec[1-3]|delay[1-2]).*$",
+         "time_start": "0.0us",
+         "time_end":   "finish",
+         "size_res":   "16",
+         "size_max":   "32",
+         "file":       "dump_exec.mat"
+       },
+
+       { "buf_regex":  "^.*cres[1-3].*$",
+         "time_start": "0.0us",
+         "time_end":   "finish",
+         "size_res":   "16",
+         "size_max":   "32",
+         "file":       "dump_cres.mat"
+       },
+
+       { "buf_regex":  "^.*planner.*$",
+         "time_start": "0.0us",
+         "time_end":   "finish",
+         "size_res":   "16",
+         "size_max":   "32",
+         "file":       "dump_plan.mat"
+       }
+   ],
+
+   "report": {
+      "log_file": "schd.log",
+      "handler":  "schd",
+      "bearing": [
+         {  "msg_type": "",
+            "info":    { "limit": "0", "actions": ["log", "display"] },
+            "warning": { "limit": "0", "actions": ["log", "display"] },
+            "error":   { "limit": "0", "actions": ["log", "display", "cache_report", "throw"] },
+            "fatal":   { "limit": "0", "actions": ["log", "display", "cache_report", "throw"] }
+         },
+         {  "msg_type": "",
+            "info":    { "limit": "0", "actions": ["log", "display"] },
+            "warning": { "limit": "0", "actions": ["log", "display"] },
+            "error":   { "limit": "0", "actions": ["log", "display", "cache_report", "throw"] },
+            "fatal":   { "limit": "0", "actions": ["log", "display", "cache_report", "throw"] }
+         }
+      ]
+   }
+}

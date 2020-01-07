@@ -1,0 +1,913 @@
+{
+   "threads": [
+      {"name":      "pipeline_cntrl",
+       "priority":  "0.0",
+       "start":     ["^__start__$"],
+       "sequence":  [{"task":  {"run": "dly10_1",
+                                "param": { "id": "p0" }
+                               }
+                     },
+                     {"event": "pipe_ena2"
+                     },
+                     {"task":  {"run": "dly10_1",
+                                "param": { "id": "p1" }
+                               }
+                     },
+                     {"event": "pipe_ena3"
+                     },
+                     {"task":  {"run": "dly10_1",
+                                "param": { "id": "p2" }
+                               }
+                     },
+                     {"event": "pipe_ena4"
+                     },
+                     {"task":  {"run": "dly10_1",
+                                "param": { "id": "p3" }
+                               }
+                     },
+                     {"event": "pipe_ena5"
+                     },
+                     {"task":  {"run": "dly10_1",
+                                "param": { "id": "p4" }
+                               }
+                     },
+                     {"event": "pipe_ena6"
+                     },
+                     {"task":  {"run": "dly10_1",
+                                "param": { "id": "p5" }
+                               }
+                     },
+                     {"event": "pipe_ena7"
+                     },
+                     {"task":  {"run": "dly10_1",
+                                "param": { "id": "p6" }
+                               }
+                     },
+                     {"event": "pipe_ena8"
+                     },
+                     {"task":  {"run": "dly10_1",
+                                "param": { "id": "p7" }
+                               }
+                     },
+                     {"event": "pipe_ena9"
+                     }
+                    ]
+      },
+
+      {"name":      "greedy_200",
+       "priority":  "1.0",
+       "start":     ["^__start__$"],
+       "sequence":  [{"task":  {"run": "greedy_exec200",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "greedy_200_done"
+                     }
+                    ]
+      },
+
+      {"name":      "greedy_190",
+       "priority":  "1.0",
+       "start":     ["^pipe_ena2$"],
+       "sequence":  [{"task":  {"run": "greedy_exec190",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "greedy_190_done"
+                     }
+                    ]
+      },
+
+      {"name":      "greedy_180",
+       "priority":  "1.0",
+       "start":     ["^pipe_ena3$"],
+       "sequence":  [{"task":  {"run": "greedy_exec180",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "greedy_180_done"
+                     }
+                    ]
+      },
+
+      {"name":      "greedy_170",
+       "priority":  "1.0",
+       "start":     ["^pipe_ena4$"],
+       "sequence":  [{"task":  {"run": "greedy_exec170",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "greedy_170_done"
+                     }
+                    ]
+      },
+
+      {"name":      "greedy_160",
+       "priority":  "1.0",
+       "start":     ["^pipe_ena5$"],
+       "sequence":  [{"task":  {"run": "greedy_exec160",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "greedy_160_done"
+                     }
+                    ]
+      },
+
+      {"name":      "greedy_150",
+       "priority":  "1.0",
+       "start":     ["^pipe_ena6$"],
+       "sequence":  [{"task":  {"run": "greedy_exec150",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "greedy_150_done"
+                     }
+                    ]
+      },
+
+      {"name":      "greedy_140",
+       "priority":  "1.0",
+       "start":     ["^pipe_ena7$"],
+       "sequence":  [{"task":  {"run": "greedy_exec140",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "greedy_140_done"
+                     }
+                    ]
+      },
+
+      {"name":      "greedy_130",
+       "priority":  "1.0",
+       "start":     ["^pipe_ena8$"],
+       "sequence":  [{"task":  {"run": "greedy_exec130",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "greedy_130_done"
+                     }
+                    ]
+      },
+
+      {"name":      "greedy_120",
+       "priority":  "1.0",
+       "start":     ["^pipe_ena9$"],
+       "sequence":  [{"task":  {"run": "greedy_exec120",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "greedy_120_done"
+                     }
+                    ]
+      },
+
+      {"name":      "lean_200",
+       "priority":  "1.0",
+       "start":     ["^__start__$"],
+       "sequence":  [{"task":  {"run": "lean_exec200",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "lean_200_done"
+                     }
+                    ]
+      },
+
+      {"name":      "lean_190",
+       "priority":  "1.0",
+       "start":     ["^__start__$"],
+       "sequence":  [{"task":  {"run": "dly10_2",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "dly10_gen190"    },
+                     {"task":  {"run": "lean_exec190",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "lean_190_done"
+                     }
+                    ]
+      },
+
+      {"name":      "lean_180",
+       "priority":  "1.0",
+       "start":     ["^dly10_gen190$"],
+       "sequence":  [{"task":  {"run": "dly10_2",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "dly10_gen180"    },
+                     {"task":  {"run": "lean_exec180",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "lean_180_done"
+                     }
+                    ]
+      },
+
+      {"name":      "lean_170",
+       "priority":  "1.0",
+       "start":     ["^dly10_gen180$"],
+       "sequence":  [{"task":  {"run": "dly10_2",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "dly10_gen170"    },
+                     {"task":  {"run": "lean_exec170",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "lean_170_done"
+                     }
+                    ]
+      },
+
+      {"name":      "lean_160",
+       "priority":  "1.0",
+       "start":     ["^dly10_gen170$"],
+       "sequence":  [{"task":  {"run": "dly10_2",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "dly10_gen160"    },
+                     {"task":  {"run": "lean_exec160",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "lean_160_done"
+                     }
+                    ]
+      },
+
+      {"name":      "lean_150",
+       "priority":  "1.0",
+       "start":     ["^dly10_gen160$"],
+       "sequence":  [{"task":  {"run": "dly10_2",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "dly10_gen150"    },
+                     {"task":  {"run": "lean_exec150",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "lean_150_done"
+                     }
+                    ]
+      },
+
+      {"name":      "lean_140",
+       "priority":  "1.0",
+       "start":     ["^dly10_gen150$"],
+       "sequence":  [{"task":  {"run": "dly10_2",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "dly10_gen140"    },
+                     {"task":  {"run": "lean_exec140",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "lean_140_done"
+                     }
+                    ]
+      },
+
+      {"name":      "lean_130",
+       "priority":  "1.0",
+       "start":     ["^dly10_gen140$"],
+       "sequence":  [{"task":  {"run": "dly10_2",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "dly10_gen130"    },
+                     {"task":  {"run": "lean_exec130",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "lean_130_done"
+                     }
+                    ]
+      },
+
+      {"name":      "lean_120",
+       "priority":  "1.0",
+       "start":     ["^dly10_gen130$"],
+       "sequence":  [{"task":  {"run": "dly10_2",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "dly10_gen120"    },
+                     {"task":  {"run": "lean_exec120",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"event": "lean_120_done"
+                     }
+                    ]
+      },
+
+      {"name":      "massive_1",
+       "priority":  "1.0",
+       "start":     ["^greedy_200_done$",
+                     "^greedy_190_done$",
+                     "^greedy_180_done$",
+                     "^greedy_170_done$",
+                     "^greedy_160_done$",
+                     "^greedy_150_done$",
+                     "^greedy_140_done$",
+                     "^greedy_130_done$",
+                     "^greedy_120_done$"],
+       "sequence":  [{"task":  {"run": "massive_exec1",
+                                "param": { "id": "" }
+                               }
+                     }
+                    ]
+      },
+
+      {"name":      "massive_2",
+       "priority":  "1.0",
+       "start":     ["^greedy_200_done$",
+                     "^greedy_190_done$",
+                     "^greedy_180_done$",
+                     "^greedy_170_done$",
+                     "^greedy_160_done$",
+                     "^greedy_150_done$",
+                     "^greedy_140_done$",
+                     "^greedy_130_done$",
+                     "^greedy_120_done$"],
+       "sequence":  [{"task":  {"run": "dly10_1",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"task":  {"run": "massive_exec2",
+                                "param": { "id": "" }
+                               }
+                     }
+                    ]
+      },
+
+      {"name":      "massive_3",
+       "priority":  "1.0",
+       "start":     ["^lean_200_done$",
+                     "^lean_190_done$",
+                     "^lean_180_done$",
+                     "^lean_170_done$",
+                     "^lean_160_done$",
+                     "^lean_150_done$",
+                     "^lean_140_done$",
+                     "^lean_130_done$",
+                     "^lean_120_done$"],
+       "sequence":  [{"task":  {"run": "massive_exec2",
+                                "param": { "id": "" }
+                               }
+                     }
+                    ]
+      },
+
+      {"name":      "massive_4",
+       "priority":  "1.0",
+       "start":     ["^lean_200_done$",
+                     "^lean_190_done$",
+                     "^lean_180_done$",
+                     "^lean_170_done$",
+                     "^lean_160_done$",
+                     "^lean_150_done$",
+                     "^lean_140_done$",
+                     "^lean_130_done$",
+                     "^lean_120_done$"],
+       "sequence":  [{"task":  {"run": "dly10_2",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"task":  {"run": "dly10_2",
+                                "param": { "id": "" }
+                               }
+                     },
+                     {"task":  {"run": "massive_exec1",
+                                "param": { "id": "" }
+                               }
+                     }
+                    ]
+      }
+   ],
+
+   "tasks": [
+      {"name":     "dly10_1",
+       "exec":     [{"run": "^delay1$",
+                     "use": [],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "10us"
+      },
+
+      {"name":     "dly10_2",
+       "exec":     [{"run": "^delay2$",
+                     "use": [],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "10us"
+      },
+
+      {"name":     "greedy_exec200",
+       "exec":     [{"run": "^exec1[1-3]$",
+                     "use": [{"res": "cres1", "demand": "20"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec1[2-4]$",
+                     "use": [{"res": "cres3", "demand":  "2"}
+                            ],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "200us"
+      },
+
+      {"name":     "greedy_exec190",
+       "exec":     [{"run": "^exec2[1-3]$",
+                     "use": [{"res": "cres1", "demand": "20"},
+                             {"res": "cres3", "demand":  "2"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec2[2-4]$",
+                     "use": [],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "190us"
+      },
+
+      {"name":     "greedy_exec180",
+       "exec":     [{"run": "^exec3[1-3]$",
+                     "use": [],
+                     "opt": {}
+                    },
+                    {"run": "^exec3[2-4]$",
+                     "use": [{"res": "cres1", "demand": "20"},
+                             {"res": "cres3", "demand":  "2"}
+                            ],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "180us"
+      },
+
+      {"name":     "greedy_exec170",
+       "exec":     [{"run": "^exec4[1-3]$",
+                     "use": [{"res": "cres1", "demand": "20"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec4[2-4]$",
+                     "use": [{"res": "cres3", "demand":  "2"}
+                            ],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "170us"
+      },
+
+      {"name":     "greedy_exec160",
+       "exec":     [{"run": "^exec5[1-3]$",
+                     "use": [{"res": "cres1", "demand": "20"},
+                             {"res": "cres3", "demand":  "2"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec5[2-4]$",
+                     "use": [],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "160us"
+      },
+
+      {"name":     "greedy_exec150",
+       "exec":     [{"run": "^exec6[1-3]$",
+                     "use": [],
+                     "opt": {}
+                    },
+                    {"run": "^exec6[2-4]$",
+                     "use": [{"res": "cres1", "demand": "20"},
+                             {"res": "cres3", "demand":  "2"}
+                            ],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "150us"
+      },
+
+      {"name":     "greedy_exec140",
+       "exec":     [{"run": "^exec7[1-3]$",
+                     "use": [{"res": "cres1", "demand": "20"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec7[2-4]$",
+                     "use": [{"res": "cres3", "demand":  "2"}
+                            ],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "140us"
+      },
+
+      {"name":     "greedy_exec130",
+       "exec":     [{"run": "^exec8[1-3]$",
+                     "use": [{"res": "cres1", "demand": "20"},
+                             {"res": "cres3", "demand":  "2"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec8[2-4]$",
+                     "use": [],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "130us"
+      },
+
+      {"name":     "greedy_exec120",
+       "exec":     [{"run": "^exec9[1-3]$",
+                     "use": [],
+                     "opt": {}
+                    },
+                    {"run": "^exec9[2-4]$",
+                     "use": [{"res": "cres1", "demand": "20"},
+                             {"res": "cres3", "demand":  "2"}
+                            ],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "120us"
+      },
+
+      {"name":     "lean_exec200",
+       "exec":     [{"run": "^exec1[1-3]$",
+                     "use": [{"res": "cres2", "demand": "5"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec1[2-4]$",
+                     "use": [{"res": "cres3", "demand": "2"}
+                            ],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "200us"
+      },
+
+      {"name":     "lean_exec190",
+       "exec":     [{"run": "^exec2[1-3]$",
+                     "use": [{"res": "cres2", "demand": "5"},
+                             {"res": "cres3", "demand": "2"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec2[2-4]$",
+                     "use": [],
+                     "opt": {}
+                    }
+                   ],
+       "runtime": "190us"
+      },
+
+      {"name":     "lean_exec180",
+       "exec":     [{"run": "^exec3[1-3]$",
+                     "use": [],
+                     "opt": {}
+                    },
+                    {"run": "^exec3[2-4]$",
+                     "use": [{"res": "cres2", "demand": "5"},
+                             {"res": "cres3", "demand": "2"}
+                            ],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "180us"
+      },
+
+      {"name":     "lean_exec170",
+       "exec":     [{"run": "^exec4[1-3]$",
+                     "use": [{"res": "cres2", "demand": "5"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec4[2-4]$",
+                     "use": [{"res": "cres3", "demand": "2"}
+                            ],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "170us"
+      },
+
+      {"name":     "lean_exec160",
+       "exec":     [{"run": "^exec5[1-3]$",
+                     "use": [{"res": "cres2", "demand": "5"},
+                             {"res": "cres3", "demand": "2"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec5[2-4]$",
+                     "use": [],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "160us"
+      },
+
+      {"name":     "lean_exec150",
+       "exec":     [{"run": "^exec6[1-3]$",
+                     "use": [],
+                     "opt": {}
+                    },
+                    {"run": "^exec6[2-4]$",
+                     "use": [{"res": "cres2", "demand": "5"},
+                             {"res": "cres3", "demand": "2"}
+                            ],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "150us"
+      },
+
+      {"name":     "lean_exec140",
+       "exec":     [{"run": "^exec7[1-3]$",
+                     "use": [{"res": "cres2", "demand": "5"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec7[2-4]$",
+                     "use": [{"res": "cres3", "demand": "2"}
+                            ],
+                     "opt": {}
+                    }
+                   ],
+        "runtime": "140us"
+      },
+
+      {"name":     "lean_exec130",
+       "exec":     [{"run": "^exec8[1-3]$",
+                     "use": [{"res": "cres2", "demand": "5"},
+                             {"res": "cres3", "demand": "2"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec8[2-4]$",
+                     "use": [],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "130us"
+      },
+
+      {"name":     "lean_exec120",
+       "exec":     [{"run": "^exec9[1-3]$",
+                     "use": [],
+                     "opt": {}
+                    },
+                    {"run": "^exec9[2-4]$",
+                     "use": [{"res": "cres2", "demand": "5"},
+                             {"res": "cres3", "demand": "2"}
+                            ],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "120us"
+      },
+
+      {"name":     "massive_exec1",
+       "exec":     [{"run": "^exec1[3-4]$", 
+                     "use": [{"res": "cres1", "demand": "10"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec2[3-4]$", 
+                     "use": [{"res": "cres1", "demand": "10"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec3[3-4]$", 
+                     "use": [{"res": "cres1", "demand": "10"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec4[3-4]$", 
+                     "use": [{"res": "cres1", "demand": "10"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec5[3-4]$", 
+                     "use": [{"res": "cres1", "demand": "10"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec6[3-4]$", 
+                     "use": [{"res": "cres1", "demand": "10"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec7[3-4]$", 
+                     "use": [{"res": "cres1", "demand": "10"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec8[3-4]$", 
+                     "use": [{"res": "cres3", "demand": "15"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec9[3-4]$", 
+                     "use": [{"res": "cres3", "demand": "15"}
+                            ],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "200us"
+      },
+
+      {"name":     "massive_exec2",
+       "exec":     [{"run": "^exec1[1-2]$", 
+                     "use": [],
+                     "opt": {}
+                    },
+                    {"run": "^exec2[1-2]$", 
+                     "use": [],
+                     "opt": {}
+                    },
+                    {"run": "^exec3[1-2]$", 
+                     "use": [],
+                     "opt": {}
+                    },
+                    {"run": "^exec4[1-2]$", 
+                     "use": [],
+                     "opt": {}
+                    },
+                    {"run": "^exec5[1-2]$", 
+                     "use": [],
+                     "opt": {}
+                    },
+                    {"run": "^exec6[1-2]$", 
+                     "use": [],
+                     "opt": {}
+                    },
+                    {"run": "^exec7[1-2]$", 
+                     "use": [],
+                     "opt": {}
+                    },
+                    {"run": "^exec8[1-2]$", 
+                     "use": [{"res": "cres2", "demand": "10"}
+                            ],
+                     "opt": {}
+                    },
+                    {"run": "^exec9[1-2]$", 
+                     "use": [{"res": "cres3", "demand": "30"}
+                            ],
+                     "opt": {}
+                    }
+                   ],
+       "runtime":  "200us"
+      }
+   ],
+
+   "executors": [
+      { "name": "delay1" },
+      { "name": "delay2" },
+
+      { "name": "exec11" },
+      { "name": "exec12" },
+      { "name": "exec13" },
+      { "name": "exec14" },
+
+      { "name": "exec21" },
+      { "name": "exec22" },
+      { "name": "exec23" },
+      { "name": "exec24" },
+
+      { "name": "exec31" },
+      { "name": "exec32" },
+      { "name": "exec33" },
+      { "name": "exec34" },
+
+      { "name": "exec41" },
+      { "name": "exec42" },
+      { "name": "exec43" },
+      { "name": "exec44" },
+
+      { "name": "exec51" },
+      { "name": "exec52" },
+      { "name": "exec53" },
+      { "name": "exec54" },
+
+      { "name": "exec61" },
+      { "name": "exec62" },
+      { "name": "exec63" },
+      { "name": "exec64" },
+
+      { "name": "exec71" },
+      { "name": "exec72" },
+      { "name": "exec73" },
+      { "name": "exec74" },
+
+      { "name": "exec81" },
+      { "name": "exec82" },
+      { "name": "exec83" },
+      { "name": "exec84" },
+
+      { "name": "exec91" },
+      { "name": "exec92" },
+      { "name": "exec93" },
+      { "name": "exec94" }
+   ],
+
+   "common": [
+      {"name": "cres1", "capacity": "100" },
+      {"name": "cres2", "capacity": "100" },
+      {"name": "cres3", "capacity": "100" }
+   ],
+
+   "time": {
+      "resolution": "1.0ns",
+      "finish":     "1.0ms"
+   },
+
+   "trace": {
+      "file":   "trace",
+      "viewer": "simvision",
+      "map": [
+         {"mask": "^.*#dly.*#.*$", "format": "%1%.%2%%3$.0s", "bgcolor": "grey0",
+          "opt": "-font -*-courier-medium-i-normal--12-* -shape bus -textcolor #F8F8FF -linecolor green" },
+         {"mask": "^lean_.*#lean_exec.*#.*$", "format": "%1%.%2%(%3%)",  "bgcolor": "Olive",
+          "opt": "-font -*-courier-medium-i-normal--12-* -shape bus -textcolor #F8F8FF -linecolor green" },
+         {"mask": "^greedy_.*#greedy_exec.*#.*$", "format": "%1%.%2%(%3%)",  "bgcolor": "DarkRed",
+          "opt": "-font -*-courier-medium-i-normal--12-* -shape bus -textcolor #F8F8FF -linecolor green" },
+          
+         {"mask": "^massive_1#massive_exec.*#.*$", "format": "%1%.%2%(%3%)",  "bgcolor": "Indigo",
+          "opt": "-font -*-courier-medium-i-normal--12-* -shape bus -textcolor #F8F8FF -linecolor green" },
+         {"mask": "^massive_2#massive_exec.*#.*$", "format": "%1%.%2%(%3%)",  "bgcolor": "Teal",
+          "opt": "-font -*-courier-medium-i-normal--12-* -shape bus -textcolor #F8F8FF -linecolor green" },
+         {"mask": "^massive_3#massive_exec.*#.*$", "format": "%1%.%2%(%3%)",  "bgcolor": "NavyBlue",
+          "opt": "-font -*-courier-medium-i-normal--12-* -shape bus -textcolor #F8F8FF -linecolor green" },
+         {"mask": "^massive_4#massive_exec.*#.*$", "format": "%1%.%2%(%3%)",  "bgcolor": "RebeccaPurple",
+          "opt": "-font -*-courier-medium-i-normal--12-* -shape bus -textcolor #F8F8FF -linecolor green" },
+          
+         {"mask": "^$", "format": "%1%%2%%3% ", "bgcolor": "grey0",
+          "opt": "-font -*-courier-medium-i-normal--12-* -shape z   -textcolor #F8F8FF -linecolor green" },
+         {"mask": "^.*$",          "format": "%1%.%2%(%3%)",  "bgcolor": "grey0",
+          "opt": "-font -*-courier-medium-i-normal--12-* -shape bus -textcolor #F8F8FF -linecolor green" }
+      ]
+   },
+
+   "dump": [
+       { "buf_regex":  "^.*(exec[1-9][1-4]|delay[1-2]).*$",
+         "time_start": "0.0us",
+         "time_end":   "finish",
+         "size_res":   "16",
+         "size_max":   "32",
+         "file":       "dump_exec.mat"
+       },
+
+       { "buf_regex":  "^.*cres[1-3].*$",
+         "time_start": "0.0us",
+         "time_end":   "finish",
+         "size_res":   "16",
+         "size_max":   "32",
+         "file":       "dump_cres.mat"
+       },
+
+       { "buf_regex":  "^.*planner.*$",
+         "time_start": "0.0us",
+         "time_end":   "finish",
+         "size_res":   "16",
+         "size_max":   "32",
+         "file":       "dump_plan.mat"
+       }
+   ],
+
+   "report": {
+      "log_file": "schd.log",
+      "handler":  "schd",
+      "bearing": [
+         {  "msg_type": "",
+            "info":    { "limit": "0", "actions": ["log", "display"] },
+            "warning": { "limit": "0", "actions": ["log", "display"] },
+            "error":   { "limit": "0", "actions": ["log", "display", "cache_report", "throw"] },
+            "fatal":   { "limit": "0", "actions": ["log", "display", "cache_report", "throw"] }
+         },
+         {  "msg_type": "",
+            "info":    { "limit": "0", "actions": ["log", "display"] },
+            "warning": { "limit": "0", "actions": ["log", "display"] },
+            "error":   { "limit": "0", "actions": ["log", "display", "cache_report", "throw"] },
+            "fatal":   { "limit": "0", "actions": ["log", "display", "cache_report", "throw"] }
+         }
+      ]
+   }
+}
