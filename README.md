@@ -8,7 +8,7 @@ Keywords:
 Multitasking, Multicore, Loosely Timed Model, Timing Budget, Static Scheduler, System Simulation, Timing Model, Hard Real Time, Model Based Development and Optimization, SystemC
 
 ## Overview
-* A simulation platform for the evaluation of the scheduling and timing budget.
+* A simulation platform for the evaluation of the scheduling and timing budget
 * Simplifies the initial stages of the architecture development for Hard Real Time systems.
   * Allow for the simulation driven development and optimization of the architecture
 * Flexible, highly abstract and independent of the implementation target (HW or SW)
