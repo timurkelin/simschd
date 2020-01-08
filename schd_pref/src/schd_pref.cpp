@@ -29,50 +29,36 @@ void schd_pref_c::load(
    catch( ... ) {
       SCHD_REPORT_ERROR( "schd::pref" ) << "Unexpected";
    }
-}
+} // schd_pref_c::load(
+
+boost::optional<const boost_pt::ptree&> schd_pref_c::get_pref(
+      const std::string& field_name,
+      bool               check_error ) {
+
+   const boost_pt::ptree& root_r = root;
+   boost::optional<const boost_pt::ptree&> field_p = root_r.get_child_optional( field_name );
+
+   if( check_error && !field_p.is_initialized()) {
+      SCHD_REPORT_ERROR( "schd::pref" ) << "Missing <"
+                                        << field_name
+                                        << "> specification.";
+   }
+
+   return field_p;
+} // schd_pref_c::get_pref(
 
 void schd_pref_c::parse(
       void ) {
+   bool check_error = true;
 
-   thrd_p = root.get_child_optional( "threads" );
-   if( !thrd_p.is_initialized() ) {
-      SCHD_REPORT_ERROR( "schd::pref" ) << "Missing <threads> specification.";
-   }
-
-   task_p = root.get_child_optional( "tasks" );
-   if( !task_p.is_initialized() ) {
-      SCHD_REPORT_ERROR( "schd::pref" ) << "Missing <tasks> specification.";
-   }
-
-   exec_p = root.get_child_optional( "executors" );
-   if( !exec_p.is_initialized() ) {
-      SCHD_REPORT_ERROR( "schd::pref" ) << "Missing <executors> specification.";
-   }
-
-   cres_p = root.get_child_optional( "common" );
-   if( !cres_p.is_initialized() ) {
-      SCHD_REPORT_ERROR( "schd::pref" ) << "Missing <common> specification.";
-   }
-
-   time_p   = root.get_child_optional( "time" );
-   if( !time_p.is_initialized() ) {
-      SCHD_REPORT_ERROR( "schd::pref" ) << "Missing <time> specification.";
-   }
-
-   report_p = root.get_child_optional( "report" );
-   if( !report_p.is_initialized() ) {
-      SCHD_REPORT_INFO( "schd::pref" ) << "Missing <report> specification.";
-   }
-
-   trace_p  = root.get_child_optional( "trace" );
-   if( !trace_p.is_initialized() ) {
-      SCHD_REPORT_INFO( "schd::pref" ) << "Missing <trace> specification.";
-   }
-
-   dump_p  = root.get_child_optional( "dump" );
-   if( !dump_p.is_initialized() ) {
-      SCHD_REPORT_INFO( "schd::pref" ) << "Missing <dump> specification.";
-   }
-}
+   thrd_p   = get_pref( "threads",   check_error );
+   task_p   = get_pref( "tasks",     check_error );
+   exec_p   = get_pref( "executors", check_error );
+   cres_p   = get_pref( "common",    check_error );
+   time_p   = get_pref( "time",      check_error );
+   report_p = get_pref( "report",    check_error );
+   trace_p  = get_pref( "trace",     check_error );
+   dump_p   = get_pref( "dump",      check_error );
+} // schd_pref_c::parse(
 
 } // namespace schd

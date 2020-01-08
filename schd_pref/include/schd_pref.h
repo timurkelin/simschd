@@ -5,7 +5,6 @@
  *    Simulation preferences builder, reader and parser
  */
 
-
 #ifndef SCHD_PREF_INCLUDE_SCHD_PREF_H_
 #define SCHD_PREF_INCLUDE_SCHD_PREF_H_
 
@@ -29,6 +28,10 @@ namespace schd {
 
       void parse(
             void );
+
+      boost::optional<const boost_pt::ptree&> get_pref(
+            const std::string& field_name,
+            bool               check_error = true );
 
       boost::optional<const boost_pt::ptree&> thrd_p;  // Threads
       boost::optional<const boost_pt::ptree&> task_p;  // Tasks / procedures
