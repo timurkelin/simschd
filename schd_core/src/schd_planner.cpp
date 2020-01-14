@@ -284,19 +284,15 @@ void schd_planner_c::init(
    // Check if there is an event potentially available for the ignition of each thread
    BOOST_FOREACH( const thrd_list_t::value_type& thrd_el, thrd_list ) {
       BOOST_FOREACH( const boost::regex& mask_el, thrd_el.second.mask_evnt_list ) {
-         bool evt_avail = false;
 
-         BOOST_FOREACH( const std::string& evt_el, evt_check_list ) {
-            if( boost::regex_match( evt_el, mask_el )) {
-               evt_avail = true;
-               break;
-            }
-         }
-
-         if( !evt_avail ) {
+         if( evt_check_list.end() == std::find_if(
+               evt_check_list.begin(),
+               evt_check_list.end(),
+               [mask_el]( const std::string& evt_el )->bool {
+                     return boost::regex_match( evt_el, mask_el ); } )) {
             SCHD_REPORT_ERROR( "schd::plan" )
                   << name()
-                  <<  " event is not found for the thread "
+                  <<  " igniting event is not found for the thread "
                   << thrd_el.first
                   << " mask "
                   << mask_el;
