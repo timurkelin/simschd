@@ -42,6 +42,7 @@ void schd_core_c::init(
 
    endpoint_pt.clear();
    endpoint_pt.put( "name", "planner" );
+   endpoint_pt.put( "dump", "" ); // don't dump inside xbars
    plan_list_pt.push_back( std::make_pair( "", endpoint_pt ));
 
    // Create exec instances and the corresponding channels
@@ -95,6 +96,7 @@ void schd_core_c::init(
 
       endpoint_pt.clear();
       endpoint_pt.put( "name", name_p.get() );
+      endpoint_pt.put( "dump", "" ); // don't dump inside xbars
       exec_list_pt.push_back( std::make_pair( "", endpoint_pt ));
    } // BOOST_FOREACH( const boost_pt::ptree::value_type& exec_el, _exec_p.get())
 
@@ -139,6 +141,7 @@ void schd_core_c::init(
 
       endpoint_pt.clear();
       endpoint_pt.put( "name", name_p.get() );
+      endpoint_pt.put( "dump", "" ); // don't dump inside xbars
       cres_list_pt.push_back( std::make_pair( "", endpoint_pt ));
    } // BOOST_FOREACH( const boost_pt::ptree::value_type& cres_el, _cres_p.get())
 

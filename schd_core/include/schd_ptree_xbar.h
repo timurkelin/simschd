@@ -15,6 +15,7 @@
 #include <boost/regex.hpp>
 #include <systemc>
 #include "schd_sig_ptree.h"
+#include "schd_dump.h"
 
 // Short alias for the namespace
 namespace boost_pt = boost::property_tree;
@@ -45,6 +46,9 @@ namespace schd {
          bool         regex = false;
          std::string  name;
          boost::regex mask;
+
+         std::string                                         dump_name;
+         boost::optional<schd_dump_buf_c<boost_pt::ptree> &> dump_p = boost::none;
       };
 
       std::vector<port_map_t> vi_map;
