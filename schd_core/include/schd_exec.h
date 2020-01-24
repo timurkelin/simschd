@@ -34,7 +34,7 @@ namespace schd {
 
       // Init declaration (to be used after the instantiation and before the port binding)
       void init(
-            boost::optional<const boost_pt::ptree&> _pref_p,      // parameters for the exec module
+            boost::optional<const boost_pt::ptree&> _exec_p,      // parameters for the exec module
             boost::optional<const boost_pt::ptree&> _cres_p );    // parameters for all cres blocks
 
       void add_trace(

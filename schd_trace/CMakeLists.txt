@@ -1,0 +1,30 @@
+# Include directories
+list(
+   APPEND
+      PRIVATE_INC_DIR
+      "${CMAKE_CURRENT_LIST_DIR}/include"
+)
+
+# Sources definition
+set(
+   SRC_CXX_LIST
+		"schd_trace.cpp"
+		"schd_trace_map.cpp"
+      "schd_trace_map_simvision.cpp"
+      "schd_trace_map_gtkwave.cpp"
+)
+
+# Full path
+list(
+   TRANSFORM
+      SRC_CXX_LIST
+   PREPEND
+      "${CMAKE_CURRENT_LIST_DIR}/src/"
+)
+
+# add to the global list of the source files
+list(
+   APPEND
+      PRIVATE_CXX
+      "${SRC_CXX_LIST}"
+)

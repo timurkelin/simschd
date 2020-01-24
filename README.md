@@ -91,7 +91,8 @@ tools          - supporting scripts
 makefile       - top-level makefile 
 ```
 Prerequisites:   
-   GCC      (4.8.5)  
+   GCC      (4.8.5)   
+   cmake    (3.16)    
    make     (3.82)  
    [SystemC  (2.3.3)][systemc]   
    [Boost    (1.68.0)][boost]   
@@ -110,16 +111,16 @@ $SYSTEMC_HOME  contains SystemC installation path
 Quick start:
 ```
 Skim through the slides:
-doc/simschd.pptx
-
-Clean:
-make clean
+./doc/simschd.pptx
 
 Build:
-make all
+$ mkdir build
+$ cd build
+$ cmake -DCMAKE_BUILD_TYPE=Release ..
+$ make all
 
 Run:
-./build/Release/out/simschd ./examples/test_short_gtkwave.json
+$ ./simschd ./examples/test_short_gtkwave.json
 
 Inspect the results:
 In gtkwave File->Open New Window->trace.vcd 
