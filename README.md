@@ -87,8 +87,6 @@ schd_report    - logging and reporting functions
 schd_systemc   - Files taken from SystemC sources  
 schd_trace     - waveform trace  
 schd_time      - simulation time and resolution  
-tools          - supporting scripts  
-makefile       - top-level makefile 
 ```
 Prerequisites:   
    GCC      (4.8.5)   
